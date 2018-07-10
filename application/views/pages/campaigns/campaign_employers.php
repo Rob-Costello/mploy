@@ -90,26 +90,21 @@
 								}
 								return $color;
 							}
-							$startdate= strtotime($camp_data['campaign_start_date']); //Future date
-							$enddate= strtotime($camp_data['employer_engagement_end']); //Future date
-
-							$cmplength = (  $startdate - $enddate);
-							$days = round($cmplength / (60 * 60 * 24));
-							$now = strtotime(date('d/m/Y h:i:s'));
-							$timeleft = ( $enddate - $now);
-							$daysleft = round($timeleft / (60 * 60 * 24));
-
-							$percent=0;
-							if($days >0 ){
-								$percent = ($daysleft * 100 / $days);
-								//$percent = ($daysleft  / $days * 100);
-
-								//$percent = 100 - $percent;
 
 
-							}
+                            $startdate = new DateTime(date('Y-m-d',strtotime($camp_data['campaign_start_date'])));
+                            $enddate =  new DateTime(date('Y-m-d',strtotime($camp_data['campaign_place_start_date'])));
+                            $days = $startdate->diff($enddate)->days;
+                            $now = new DateTime(date('Y-m-d'));
+                            $daysleft = $now->diff($enddate)->days;
+                            if($daysleft <1 || $days < 1){
+                                $percent = 0;
 
-							$color = percent($percent);
+                            }else {
+                                $percent = ($daysleft * 100 / $days);
+                            }
+                            $color = percent($percent);
+
 							?>
 							<div class="col-md-12">
 							<div class="progress-group">
